@@ -6,37 +6,36 @@ class View(ft.UserControl):
         super().__init__()
         # page stuff
         self._page = page
-        self._page.title = "Lab12-Simulazione esame"
+        self._page.title = "Simulazione - Grafo dei film"
         self._page.horizontal_alignment = 'CENTER'
         self._page.theme_mode = ft.ThemeMode.LIGHT
-        # controller (it is not initialized. Must be initialized in the main, after the controller is created)
+        # controller (agganciato nel main, dopo la creazione)
         self._controller = None
         # graphical elements
         self._title = None
-        self.txt_name = None
-        self.btn_hello = None
         self.txt_result = None
-        self.txt_container = None
 
     def load_interface(self):
         # title
-        self._title = ft.Text("TdP-Simulazione esame imdb", color="blue", size=24)
+        self._title = ft.Text("TdP - Grafo dei film (attori in comune)", color="blue", size=24)
         self._page.controls.append(self._title)
 
+        # dropdown degli ANNI (nascono vuoti: li riempie il controller dal DB)
+        self._ddanno1 = ft.Dropdown(label="Anno", hint_text="Anno minimo")
+        self._ddanno2 = ft.Dropdown(label="Anno", hint_text="Anno massimo")
 
-        self._ddrating1 = ft.Dropdown(label="Voto", hint_text="Rating")
-        self._ddrating2 = ft.Dropdown(label="Voto", hint_text="Rating")
+        self._controller.fillDDsYears()
 
+        self._btnCreaGrafo = ft.ElevatedButton(text="Crea Grafo",
+                                               on_click=self._controller.handleCreaGrafo)
 
-        self._controller.fillDDsRating()
-        self._btnCreaGrafo = ft.ElevatedButton(text="Crea Grafo", on_click=self._controller.handleCreaGrafo)
-
-        row1 = ft.Row([self._ddrating1,self._ddrating2, self._btnCreaGrafo], alignment=ft.MainAxisAlignment.CENTER,
+        row1 = ft.Row([self._ddanno1, self._ddanno2, self._btnCreaGrafo],
+                      alignment=ft.MainAxisAlignment.CENTER,
                       vertical_alignment=ft.CrossAxisAlignment.END)
-
         self._page.controls.append(row1)
 
-        self._btnCammino = ft.ElevatedButton(text="Trova Cammino", on_click=self._controller.handleCammino)
+        self._btnCammino = ft.ElevatedButton(text="Trova Cammino",
+                                             on_click=self._controller.handleCammino)
 
         row2 = ft.Row([self._btnCammino],
                       alignment=ft.MainAxisAlignment.CENTER)
